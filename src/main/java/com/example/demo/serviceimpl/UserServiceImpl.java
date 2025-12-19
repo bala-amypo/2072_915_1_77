@@ -21,7 +21,6 @@ public class UserServiceImpl implements AuthService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
-        // password hashing skipped for Review-1
         return userRepository.save(user);
     }
 
