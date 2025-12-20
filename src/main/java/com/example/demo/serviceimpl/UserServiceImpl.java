@@ -2,8 +2,8 @@ package com.example.demo.serviceimpl;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.AuthRequest;
 import com.example.demo.entity.User;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AuthService;
 
@@ -17,22 +17,11 @@ public class UserServiceImpl implements AuthService {
     }
 
     @Override
-    public User register(User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
-        }
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User getById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public void register(AuthRequest request) {
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setRole("STUDENT");
+        userRepository.save(user);
     }
 }

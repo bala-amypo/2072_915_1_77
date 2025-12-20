@@ -1,7 +1,9 @@
 package com.example.demo.serviceimpl;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import com.example.demo.entity.StudentProfile;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.StudentProfileRepository;
@@ -15,23 +17,26 @@ public class StudentProfileServiceImpl implements StudentProfileService {
     public StudentProfileServiceImpl(StudentProfileRepository repository) {
         this.repository = repository;
     }
+
     @Override
-    public StudentProfile createProfile(StudentProfile profile) {
-        if (repository.existsByEnrollmentId(profile.getEnrollmentId())) {
-            throw new IllegalArgumentException("Enrollment ID already exists");
-        }
+    public StudentProfile createOrUpdateProfile(StudentProfile profile) {
         return repository.save(profile);
     }
+
     @Override
-    public StudentProfile getById(Long id) {
+    public StudentProfile getProfileById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Student profile not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("StudentProfile not found"));
     }
+
     @Override
-    public StudentProfile getByEnrollmentId(String enrollmentId) {
+    public StudentProfile getProfileByEnrollmentId(String enrollmentId) {
         return repository.findByEnrollmentId(enrollmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Student profile not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("StudentProfile not found"));
     }
+
     @Override
     public List<StudentProfile> getAllProfiles() {
         return repository.findAll();

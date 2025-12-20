@@ -10,10 +10,18 @@ import com.example.demo.service.SkillGapService;
 
 @Service
 public class SkillGapServiceImpl implements SkillGapService {
+
     private final SkillGapRecordRepository repository;
+
     public SkillGapServiceImpl(SkillGapRecordRepository repository) {
         this.repository = repository;
     }
+
+    @Override
+    public List<SkillGapRecord> computeGaps(Long studentId) {
+        return repository.findByStudentProfileId(studentId);
+    }
+
     @Override
     public List<SkillGapRecord> getGapsByStudent(Long studentId) {
         return repository.findByStudentProfileId(studentId);
