@@ -1,38 +1,67 @@
-package com.example.demo.controller;
+package com.example.demo.entity;
 
-import java.util.List;
+import jakarta.persistence.*;
+import java.time.Instant;
 
-import org.springframework.web.bind.annotation.*;
+@Entity
+public class SkillGapRecommendation {
 
-import com.example.demo.entity.SkillGapRecommendation;
-import com.example.demo.service.RecommendationService;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@RestController
-@RequestMapping("/api/recommendations")
-public class RecommendationController {
+    @ManyToOne
+    @JoinColumn(name = "student_profile_id")
+    private StudentProfile studentProfile;
 
-    private final RecommendationService recommendationService;
+    @ManyToOne
+    @JoinColumn(name = "skill_id")
+    private Skill skill;
 
-    public RecommendationController(RecommendationService recommendationService) {
-        this.recommendationService = recommendationService;
+    private Double recommendedScore;
+
+    private Instant generatedAt;
+
+    @PrePersist
+    public void onCreate() {
+        this.generatedAt = Instant.now();
     }
 
-    // 1️⃣ Recommendation for ONE skill of a student
-    // GET /api/recommendations/student/{studentId}/skill/{skillId}
-    @GetMapping("/student/{studentId}/skill/{skillId}")
-    public SkillGapRecommendation getRecommendationForStudentSkill(
-            @PathVariable Long studentId,
-            @PathVariable Long skillId
-    ) {
-        return recommendationService.computeRecommendationForStudentSkill(studentId, skillId);
+    // -------- getters & setters --------
+
+    public Long getId() {
+        return id;
     }
 
-    // 2️⃣ Recommendations for ALL skills of a student
-    // GET /api/recommendations/student/{studentId}
-    @GetMapping("/student/{studentId}")
-    public List<SkillGapRecommendation> getRecommendationsForStudent(
-            @PathVariable Long studentId
-    ) {
-        return recommendationService.computeRecommendationsForStudent(studentId);
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public StudentProfile getStudentProfile() {
+        return studentProfile;
+    }
+
+    public void setStudentProfile(StudentProfile studentProfile) {
+        this.studentProfile = studentProfile;
+    }
+
+    public Skill getSkill() {
+        return skill;
+    }
+
+    public void setSkill(Skill skill) {
+        this.skill = skill;
+    }
+
+    public Double getRecommendedScore() {
+        return recommendedScore;
+    }
+
+    public void setRecommendedScore(Double recommendedScore) {
+        this.recommendedScore = recommendedScore;
+    }
+
+    public Instant getGeneratedAt() {
+        return generatedAt;
     }
 }
