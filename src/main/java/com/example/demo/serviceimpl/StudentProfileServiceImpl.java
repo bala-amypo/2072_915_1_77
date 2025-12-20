@@ -20,6 +20,13 @@ public class StudentProfileServiceImpl implements StudentProfileService {
 
     @Override
     public StudentProfile createOrUpdateProfile(StudentProfile profile) {
+
+        if (profile.getId() == null &&
+            repository.existsByEnrollmentId(profile.getEnrollmentId())) {
+
+            throw new IllegalArgumentException("Enrollment ID already exists");
+        }
+
         return repository.save(profile);
     }
 
@@ -27,14 +34,14 @@ public class StudentProfileServiceImpl implements StudentProfileService {
     public StudentProfile getProfileById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("StudentProfile not found"));
+                        new ResourceNotFoundException("Student profile not found"));
     }
 
     @Override
     public StudentProfile getProfileByEnrollmentId(String enrollmentId) {
         return repository.findByEnrollmentId(enrollmentId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("StudentProfile not found"));
+                        new ResourceNotFoundException("Student profile not found"));
     }
 
     @Override
