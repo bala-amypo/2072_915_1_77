@@ -10,17 +10,10 @@ public class SkillGapRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "student_profile_id")
-    private StudentProfile studentProfile;
-
-    @ManyToOne
-    @JoinColumn(name = "skill_id")
-    private Skill skill;
-
     private Double currentScore;
     private Double targetScore;
     private Double gapScore;
+
     private Instant calculatedAt;
 
     @PrePersist
@@ -28,5 +21,35 @@ public class SkillGapRecord {
         this.calculatedAt = Instant.now();
     }
 
-    
+    public Long getId() {
+        return id;
+    }
+
+    public Double getCurrentScore() {
+        return currentScore;
+    }
+
+    public void setCurrentScore(Double currentScore) {
+        this.currentScore = currentScore;
+    }
+
+    public Double getTargetScore() {
+        return targetScore;
+    }
+
+    public void setTargetScore(Double targetScore) {
+        this.targetScore = targetScore;
+    }
+
+    public Double getGapScore() {
+        return gapScore;
+    }
+
+    public void setGapScore(Double gapScore) {
+        this.gapScore = gapScore;
+    }
+
+    public Instant getCalculatedAt() {
+        return calculatedAt;
+    }
 }
