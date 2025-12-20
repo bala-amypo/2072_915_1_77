@@ -3,10 +3,8 @@ package com.example.demo.serviceimpl;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import com.example.demo.service.RecommendationService;
-
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,31 +39,23 @@ public class RecommendationServiceImpl implements RecommendationService {
         Skill skill = skillRepo.findById(skillId)
                 .orElseThrow(() -> new RuntimeException("Skill not found"));
 
-        List<AssessmentResult> results =
-                assessmentRepo.findByStudentProfileIdAndSkillId(studentProfileId, skillId);
+        double avgScore = assessmentRepo
+                .findByStudentProfileIdAndSkillId(studentProfileId, skillId)
+                .stream()
+                .mapToDouble(AssessmentResult::getScore)
+                .average()
+                .orElse(0.0);
 
-        double avgScore = results.isEmpty()
-                ? 0
-                : results.stream().mapToDouble(AssessmentResult::getScore).average().orElse(0);
-
-        double gapScore = skill.getMinCompetencyScore() - avgScore;
+        double gap = skill.getMinCompetencyScore() - avgScore;
 
         SkillGapRecommendation rec = new SkillGapRecommendation();
         rec.setStudentProfile(profile);
         rec.setSkill(skill);
-        rec.setGapScore(gapScore);
-        rec.setGeneratedAt(Instant.now());
+        rec.setGapScore(gap);
+        rec.setPriority(gap > 20 ? "HIGH" : "LOW");
+        rec.setRecommendedAction("Practice more on " + skill.getSkillName());
 
-        if (gapScore > 30) {
-            rec.setPriority("HIGH");
-            rec.setRecommendedAction("Immediate training required");
-        } else if (gapScore > 10) {
-            rec.setPriority("MEDIUM");
-            rec.setRecommendedAction("Practice recommended");
-        } else {
-            rec.setPriority("LOW");
-            rec.setRecommendedAction("Skill adequate");
-        }
+        // ❌ DO NOT SET generatedAt (handled by @PrePersist)
 
         return recommendationRepo.save(rec);
     }
@@ -74,21 +64,17 @@ public class RecommendationServiceImpl implements RecommendationService {
     public List<SkillGapRecommendation> computeRecommendationsForStudent(
             Long studentProfileId
     ) {
+        studentProfileRepo.findById(studentProfileId)
+                .orElseThrow(() -> new RuntimeException("Student profile not found"));
+
+        List<Skill> skills = skillRepo.findByActiveTrue();
         List<SkillGapRecommendation> list = new ArrayList<>();
 
-        for (Skill skill : skillRepo.findByActiveTrue()) {
+        for (Skill skill : skills) {
             list.add(
-                    computeRecommendationForStudentSkill(studentProfileId, skill.getId())
+                computeRecommendationForStudentSkill(studentProfileId, skill.getId())
             );
         }
-
         return list;
-    }
-
-    @Override
-    public List<SkillGapRecommendation> getRecommendationsForStudent(
-            Long studentProfileId
-    ) {
-        return recommendationRepo.findByStudentProfileId(studentProfileId);
     }
 }
