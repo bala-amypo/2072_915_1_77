@@ -1,11 +1,10 @@
 package com.example.demo.controller;
 
-import java.util.Map;
-
-import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.entity.User;
+import com.example.demo.dto.AuthRequest;
 import com.example.demo.service.AuthService;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -17,17 +16,17 @@ public class AuthController {
         this.authService = authService;
     }
 
-    // REGISTER
-   @PostMapping("/auth/register")
-public ResponseEntity<String> register(@RequestBody AuthRequest request) {
-    authService.register(request);
-    return ResponseEntity.ok("User registered successfully");
-}
+    // ✅ REGISTER
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody AuthRequest request) {
+        authService.register(request);
+        return ResponseEntity.ok("User registered successfully");
+    }
 
-
-    // LOGIN
+    // ✅ LOGIN  (THIS WAS MISSING)
     @PostMapping("/login")
-    public User login(@RequestBody Map<String, String> body) {
-        return authService.login(body.get("email"));
+    public ResponseEntity<String> login(@RequestBody AuthRequest request) {
+        authService.login(request);
+        return ResponseEntity.ok("Login successful");
     }
 }
