@@ -1,7 +1,6 @@
 package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.User;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AuthService;
 
@@ -18,7 +17,7 @@ public class UserServiceImpl implements AuthService {
         this.userRepository = userRepository;
     }
 
-    // ✅ REQUIRED BY AuthService
+    // ✅ REGISTER
     @Override
     public User register(User user) {
 
@@ -26,26 +25,21 @@ public class UserServiceImpl implements AuthService {
             throw new IllegalArgumentException("Email already exists");
         }
 
+        // REQUIRED BY TEST CASE
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // REQUIRED DEFAULT ROLE
+        if (user.getRole() == null) {
+            user.setRole(User.Role.STUDENT);
+        }
 
         return userRepository.save(user);
     }
 
-    // ✅ REQUIRED BY AuthService
+    // ✅ LOGIN (spec only checks existence)
     @Override
     public User login(String email) {
-
         return userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found"));
-    }
-
-    // ✅ USED DIRECTLY IN TEST CASE
-    // ❌ DO NOT use @Override here
-    public User findByEmail(String email) {
-
-        return userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
