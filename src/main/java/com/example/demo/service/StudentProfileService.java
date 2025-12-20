@@ -5,8 +5,11 @@ import com.example.demo.entity.StudentProfile;
 
 public interface StudentProfileService {
 
-    StudentProfile createProfile(StudentProfile profile);
-    StudentProfile getById(Long id);
-    StudentProfile getByEnrollmentId(String enrollmentId);
+    StudentProfile createOrUpdateProfile(StudentProfile profile);
+
+    StudentProfile getProfileById(Long id);
+
+    StudentProfile getProfileByEnrollmentId(String enrollmentId);
+
     List<StudentProfile> getAllProfiles();
 }

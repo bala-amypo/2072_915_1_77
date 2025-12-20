@@ -6,8 +6,12 @@ import com.example.demo.entity.Skill;
 public interface SkillService {
 
     Skill createSkill(Skill skill);
+
+    Skill updateSkill(Long id, Skill skill);
+
     Skill getById(Long id);
+
     List<Skill> getAllSkills();
-    List<Skill> getActiveSkills();
+
     void deactivateSkill(Long id);
 }
