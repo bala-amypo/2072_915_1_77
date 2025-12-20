@@ -18,7 +18,10 @@ public class SkillGapRecommendation {
     @JoinColumn(name = "skill_id")
     private Skill skill;
 
-    private Double recommendedScore;
+    // 🔥 REQUIRED FOR SERVICE + TEST CASE
+    private Double gapScore;
+    private String priority;
+    private String recommendedAction;
 
     private Instant generatedAt;
 
@@ -27,14 +30,10 @@ public class SkillGapRecommendation {
         this.generatedAt = Instant.now();
     }
 
-    // -------- getters & setters --------
+    // ---------- getters & setters ----------
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public StudentProfile getStudentProfile() {
@@ -53,12 +52,28 @@ public class SkillGapRecommendation {
         this.skill = skill;
     }
 
-    public Double getRecommendedScore() {
-        return recommendedScore;
+    public Double getGapScore() {
+        return gapScore;
     }
 
-    public void setRecommendedScore(Double recommendedScore) {
-        this.recommendedScore = recommendedScore;
+    public void setGapScore(Double gapScore) {
+        this.gapScore = gapScore;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
+    public String getRecommendedAction() {
+        return recommendedAction;
+    }
+
+    public void setRecommendedAction(String recommendedAction) {
+        this.recommendedAction = recommendedAction;
     }
 
     public Instant getGeneratedAt() {
