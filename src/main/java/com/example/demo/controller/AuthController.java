@@ -50,7 +50,7 @@ public class RecommendationController {
         return recommendationService.getRecommendationsForStudent(studentId);
     }
 }
-;
+
     }
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
