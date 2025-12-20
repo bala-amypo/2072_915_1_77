@@ -3,6 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.entity.User;
 import com.example.demo.service.AuthService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,19 +27,17 @@ public class AuthController {
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
-        // ❌ DO NOT SET ROLE (not in your entity)
 
         authService.register(user);
 
         return ResponseEntity.ok("User registered successfully");
     }
 
-    // ✅ LOGIN (matches AuthService exactly)
+    // ✅ LOGIN (required by spec, simple version)
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<User> login(@RequestBody AuthRequest request) {
 
-        authService.login(request.getEmail());
-
-        return ResponseEntity.ok("Login successful");
+        User user = authService.login(request.getEmail());
+        return ResponseEntity.ok(user);
     }
 }
