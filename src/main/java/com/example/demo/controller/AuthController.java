@@ -1,32 +1,22 @@
-package com.example.demo.controller;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.service.AuthService;
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final AuthService authService;
+    private final UserService userService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
-    // REGISTER
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody AuthRequest request) {
-        authService.register(request);
-        return ResponseEntity.ok("User registered successfully");
-    }
+    public User register(@RequestBody Map<String, String> body) {
 
-    // LOGIN (Review-1 simple)
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+        User user = User.builder()
+                .email(body.get("email"))
+                .password(body.get("password"))
+                .role(User.Role.STUDENT)   // default role
+                .build();
+
+        return userService.register(user);
     }
 }
