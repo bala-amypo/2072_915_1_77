@@ -2,10 +2,19 @@ package com.example.demo.dto;
 
 public class AuthRequest {
 
+    private String fullName;   // IMPORTANT
     private String email;
     private String password;
 
     public AuthRequest() {
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
