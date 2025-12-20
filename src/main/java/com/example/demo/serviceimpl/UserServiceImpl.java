@@ -1,9 +1,9 @@
 package com.example.demo.serviceimpl;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AuthService;
@@ -17,25 +17,22 @@ public class UserServiceImpl implements AuthService {
         this.userRepository = userRepository;
     }
 
-    // ✅ REQUIRED by test case
     @Override
-    public void register(AuthRequest request) {
+    public User register(User user) {
 
-        User user = new User();
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
 
-        // default value to satisfy entity constraint
-        user.setFullName("DEFAULT_USER");
-
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        user.setRole("STUDENT");
-
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
-    // ✅ REQUIRED only to satisfy interface (Review-1)
     @Override
-    public AuthResponse login(AuthRequest request) {
-        return new AuthResponse("Login successful");
+    public User login(String email) {
+
+        Optional<User> user = userRepository.findByEmail(email);
+
+        return user.orElseThrow(() ->
+                new RuntimeException("User not found"));
     }
 }
