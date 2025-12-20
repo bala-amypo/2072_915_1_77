@@ -18,15 +18,12 @@ public class AuthController {
     }
 
     // REGISTER
-    @PostMapping("/register")
-    public User register(@RequestBody Map<String, String> body) {
+   @PostMapping("/auth/register")
+public ResponseEntity<String> register(@RequestBody AuthRequest request) {
+    authService.register(request);
+    return ResponseEntity.ok("User registered successfully");
+}
 
-        User user = new User();
-        user.setEmail(body.get("email"));
-        user.setPassword(body.get("password"));
-
-        return authService.register(user);
-    }
 
     // LOGIN
     @PostMapping("/login")
