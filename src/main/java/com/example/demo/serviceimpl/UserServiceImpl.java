@@ -18,10 +18,12 @@ public class UserServiceImpl implements AuthService {
 
     @Override
     public void register(AuthRequest request) {
+
         User user = new User();
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(request.getPassword()); // Review-1: plain OK
         user.setRole("STUDENT");
+
         userRepository.save(user);
     }
 }
