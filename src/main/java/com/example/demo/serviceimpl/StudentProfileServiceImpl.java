@@ -46,9 +46,11 @@ public class StudentProfileServiceImpl implements StudentProfileService {
     }
 
     @Override
-    public StudentProfile getProfileByEnrollmentId(String enrollmentId) {
-        return studentProfileRepository.findByEnrollmentId(enrollmentId);
-    }
+public StudentProfile getProfileByEnrollmentId(String enrollmentId) {
+    return studentProfileRepository.findByEnrollmentId(enrollmentId)
+            .orElseThrow(() -> new RuntimeException("Student profile not found"));
+}
+
 
     @Override
     public List<StudentProfile> getAllProfiles() {
