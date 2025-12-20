@@ -10,17 +10,16 @@ public class StudentProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 🔹 Make user OPTIONAL for Review-1
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String enrollmentId;
 
-    @Column(nullable = false)
     private String cohort;
 
-    @Column(nullable = false)
     private Integer yearLevel;
 
     private Boolean active = true;
@@ -29,27 +28,61 @@ public class StudentProfile {
 
     @PrePersist
     @PreUpdate
-    public void onUpdate() {
+    public void updateTimestamp() {
         this.lastUpdatedAt = Instant.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // ---------- Getters & Setters ----------
 
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getEnrollmentId() { return enrollmentId; }
-    public void setEnrollmentId(String enrollmentId) { this.enrollmentId = enrollmentId; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getCohort() { return cohort; }
-    public void setCohort(String cohort) { this.cohort = cohort; }
+    public User getUser() {
+        return user;
+    }
 
-    public Integer getYearLevel() { return yearLevel; }
-    public void setYearLevel(Integer yearLevel) { this.yearLevel = yearLevel; }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    public String getEnrollmentId() {
+        return enrollmentId;
+    }
 
-    public Instant getLastUpdatedAt() { return lastUpdatedAt; }
+    public void setEnrollmentId(String enrollmentId) {
+        this.enrollmentId = enrollmentId;
+    }
+
+    public String getCohort() {
+        return cohort;
+    }
+
+    public void setCohort(String cohort) {
+        this.cohort = cohort;
+    }
+
+    public Integer getYearLevel() {
+        return yearLevel;
+    }
+
+    public void setYearLevel(Integer yearLevel) {
+        this.yearLevel = yearLevel;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Instant getLastUpdatedAt() {
+        return lastUpdatedAt;
+    }
 }
