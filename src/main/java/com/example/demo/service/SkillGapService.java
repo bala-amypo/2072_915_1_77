@@ -5,7 +5,7 @@ import com.example.demo.entity.SkillGapRecord;
 
 public interface SkillGapService {
 
-    List<SkillGapRecord> computeGaps(Long studentId);
+    List<SkillGapRecord> computeGaps(Long studentProfileId);
 
-    List<SkillGapRecord> getGapsByStudent(Long studentId);
+    List<SkillGapRecord> getGapsByStudent(Long studentProfileId);
 }
