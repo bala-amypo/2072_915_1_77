@@ -1,84 +1,38 @@
-package com.example.demo.entity;
+package com.example.demo.controller;
 
-import jakarta.persistence.*;
-import java.time.Instant;
+import java.util.List;
 
-@Entity
-@Table(name = "skill_gap_recommendation")
-public class SkillGapRecommendation {
+import org.springframework.web.bind.annotation.*;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import com.example.demo.entity.SkillGapRecommendation;
+import com.example.demo.service.RecommendationService;
 
-    private Double gapScore;
+@RestController
+@RequestMapping("/api/recommendations")
+public class RecommendationController {
 
-    private Instant generatedAt;
+    private final RecommendationService recommendationService;
 
-    private String priority;
-
-    private String recommendedAction;
-
-    @ManyToOne
-    @JoinColumn(name = "skill_id")
-    private Skill skill;
-
-    @ManyToOne
-    @JoinColumn(name = "student_profile_id")
-    private StudentProfile studentProfile;
-
-    @PrePersist
-    public void onCreate() {
-        this.generatedAt = Instant.now();
+    public RecommendationController(RecommendationService recommendationService) {
+        this.recommendationService = recommendationService;
     }
 
-    // ===== Getters & Setters =====
-
-    public Long getId() {
-        return id;
+    // 1️⃣ Recommendation for ONE skill of a student
+    // GET /api/recommendations/student/{studentId}/skill/{skillId}
+    @GetMapping("/student/{studentId}/skill/{skillId}")
+    public SkillGapRecommendation getRecommendationForStudentSkill(
+            @PathVariable Long studentId,
+            @PathVariable Long skillId
+    ) {
+        return recommendationService.computeRecommendationForStudentSkill(studentId, skillId);
     }
 
-    public Double getGapScore() {
-        return gapScore;
-    }
-
-    public void setGapScore(Double gapScore) {
-        this.gapScore = gapScore;
-    }
-
-    public Instant getGeneratedAt() {
-        return generatedAt;
-    }
-
-    public String getPriority() {
-        return priority;
-    }
-
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-
-    public String getRecommendedAction() {
-        return recommendedAction;
-    }
-
-    public void setRecommendedAction(String recommendedAction) {
-        this.recommendedAction = recommendedAction;
-    }
-
-    public Skill getSkill() {
-        return skill;
-    }
-
-    public void setSkill(Skill skill) {
-        this.skill = skill;
-    }
-
-    public StudentProfile getStudentProfile() {
-        return studentProfile;
-    }
-
-    public void setStudentProfile(StudentProfile studentProfile) {
-        this.studentProfile = studentProfile;
+    // 2️⃣ Recommendations for ALL skills of a student
+    // GET /api/recommendations/student/{studentId}
+    @GetMapping("/student/{studentId}")
+    public List<SkillGapRecommendation> getRecommendationsForStudent(
+            @PathVariable Long studentId
+    ) {
+        return recommendationService.computeRecommendationsForStudent(studentId);
     }
 }
