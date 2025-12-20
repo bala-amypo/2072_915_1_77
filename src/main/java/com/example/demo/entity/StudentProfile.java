@@ -10,7 +10,7 @@ public class StudentProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 🔹 Make user OPTIONAL for Review-1
+    // optional for Review-1
     @OneToOne
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
@@ -32,57 +32,24 @@ public class StudentProfile {
         this.lastUpdatedAt = Instant.now();
     }
 
-    // ---------- Getters & Setters ----------
+    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        return id;
-    }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getEnrollmentId() { return enrollmentId; }
+    public void setEnrollmentId(String enrollmentId) { this.enrollmentId = enrollmentId; }
 
-    public User getUser() {
-        return user;
-    }
+    public String getCohort() { return cohort; }
+    public void setCohort(String cohort) { this.cohort = cohort; }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+    public Integer getYearLevel() { return yearLevel; }
+    public void setYearLevel(Integer yearLevel) { this.yearLevel = yearLevel; }
 
-    public String getEnrollmentId() {
-        return enrollmentId;
-    }
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 
-    public void setEnrollmentId(String enrollmentId) {
-        this.enrollmentId = enrollmentId;
-    }
-
-    public String getCohort() {
-        return cohort;
-    }
-
-    public void setCohort(String cohort) {
-        this.cohort = cohort;
-    }
-
-    public Integer getYearLevel() {
-        return yearLevel;
-    }
-
-    public void setYearLevel(Integer yearLevel) {
-        this.yearLevel = yearLevel;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public Instant getLastUpdatedAt() {
-        return lastUpdatedAt;
-    }
+    public Instant getLastUpdatedAt() { return lastUpdatedAt; }
 }
