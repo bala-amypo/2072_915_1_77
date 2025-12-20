@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.AuthRequest;
-import com.example.demo.entity.User;
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.service.AuthService;
 
 import org.springframework.http.ResponseEntity;
@@ -18,15 +18,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody AuthRequest request) {
-        authService.register(request);
-        return ResponseEntity.ok("User registered successfully");
+    public ResponseEntity<AuthResponse> register(@RequestBody AuthRequest request) {
+        return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(
-                authService.login(request.getEmail())
-        );
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+        return ResponseEntity.ok(authService.login(request));
     }
 }
