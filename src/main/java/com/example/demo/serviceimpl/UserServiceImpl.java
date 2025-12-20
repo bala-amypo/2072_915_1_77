@@ -18,7 +18,7 @@ public class UserServiceImpl implements AuthService {
         this.userRepository = userRepository;
     }
 
-    // ✅ REGISTER (matches test case)
+    // ✅ REQUIRED BY AuthService
     @Override
     public User register(User user) {
 
@@ -31,7 +31,7 @@ public class UserServiceImpl implements AuthService {
         return userRepository.save(user);
     }
 
-    // ✅ LOGIN (RETURN USER — NOT void)
+    // ✅ REQUIRED BY AuthService
     @Override
     public User login(String email) {
 
@@ -40,8 +40,8 @@ public class UserServiceImpl implements AuthService {
                         new ResourceNotFoundException("User not found"));
     }
 
-    // ✅ USED IN TEST CASE
-    @Override
+    // ✅ USED DIRECTLY IN TEST CASE
+    // ❌ DO NOT use @Override here
     public User findByEmail(String email) {
 
         return userRepository.findByEmail(email)
