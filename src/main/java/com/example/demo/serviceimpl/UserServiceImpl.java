@@ -1,5 +1,6 @@
 package com.example.demo.serviceimpl;
 
+import com.example.demo.dto.AuthRequest;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AuthService;
@@ -11,32 +12,27 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    // ✅ REGISTER
     @Override
-    public User register(User user) {
+    public User register(AuthRequest request) {
 
-        if (userRepository.existsByEmail(user.getEmail())) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
 
-        // REQUIRED BY TEST CASE
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        // REQUIRED DEFAULT ROLE
-        if (user.getRole() == null) {
-            user.setRole(User.Role.STUDENT);
-        }
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setPassword(encoder.encode(request.getPassword()));
+        user.setRole(User.Role.STUDENT);
 
         return userRepository.save(user);
     }
 
-    // ✅ LOGIN (spec only checks existence)
     @Override
     public User login(String email) {
         return userRepository.findByEmail(email)
