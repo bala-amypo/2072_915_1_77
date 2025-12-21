@@ -28,15 +28,13 @@ public class UserServiceImpl implements AuthService {
 
         User user = new User();
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword()); // hashing NOT required for test
+        user.setPassword(request.getPassword()); 
         user.setFullName("DEFAULT_USER");
         user.setRole("STUDENT");
         user.setCreatedAt(Instant.now());
 
         return userRepository.save(user);
     }
-
-    // LOGIN (TEST EXPECTS THIS)
     @Override
     public User login(String email) {
 

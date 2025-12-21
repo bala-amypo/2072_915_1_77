@@ -24,8 +24,6 @@ public class StudentProfileServiceImpl implements StudentProfileService {
 
     @Override
     public StudentProfile createOrUpdateProfile(StudentProfile profile) {
-
-        // 🔑 AUTH → USER mapping (MANDATORY)
         Long userId = profile.getUser().getId();
 
         User user = userRepository.findById(userId)
@@ -33,8 +31,6 @@ public class StudentProfileServiceImpl implements StudentProfileService {
 
         profile.setUser(user);
 
-        // ❌ DO NOT set lastUpdatedAt here
-        // Entity @PreUpdate / @PrePersist will handle it
 
         return studentProfileRepository.save(profile);
     }
