@@ -26,9 +26,6 @@ public class SkillGapRecord {
     public void onCreate() {
         this.calculatedAt = Instant.now();
     }
-
-    // ---------- GETTERS ----------
-
     public Long getId() {
         return id;
     }

@@ -27,8 +27,6 @@ public class SkillServiceImpl implements SkillService {
 
         Skill existing = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Skill not found"));
-
-        // ⚠️ USE ONLY FIELDS THAT EXIST IN Skill ENTITY
         existing.setSkillName(skill.getSkillName());
         existing.setCategory(skill.getCategory());
         existing.setDescription(skill.getDescription());
