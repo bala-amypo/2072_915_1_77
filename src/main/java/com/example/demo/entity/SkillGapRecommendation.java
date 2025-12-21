@@ -18,7 +18,6 @@ public class SkillGapRecommendation {
     @JoinColumn(name = "skill_id")
     private Skill skill;
 
-    // 🔥 REQUIRED FOR SERVICE + TEST CASE
     private Double gapScore;
     private String priority;
     private String recommendedAction;

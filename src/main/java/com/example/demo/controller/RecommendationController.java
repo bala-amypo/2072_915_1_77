@@ -16,8 +16,6 @@ public class RecommendationController {
     public RecommendationController(RecommendationService recommendationService) {
         this.recommendationService = recommendationService;
     }
-
-    // GET recommendation for one skill
     @GetMapping("/student/{studentId}/skill/{skillId}")
     public SkillGapRecommendation getRecommendationForStudentSkill(
             @PathVariable Long studentId,
@@ -25,8 +23,6 @@ public class RecommendationController {
 
         return recommendationService.computeRecommendationForStudentSkill(studentId, skillId);
     }
-
-    // GET recommendations for all skills
     @GetMapping("/student/{studentId}")
     public List<SkillGapRecommendation> getRecommendationsForStudent(
             @PathVariable Long studentId) {

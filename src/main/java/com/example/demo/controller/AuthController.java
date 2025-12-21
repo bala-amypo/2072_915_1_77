@@ -18,19 +18,14 @@ public class AuthController {
 
     private final AuthService authService;
 
-    // Constructor Injection
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
-
-    // ✅ REGISTER
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody AuthRequest request) {
         authService.register(request);
         return ResponseEntity.ok("User registered successfully");
     }
-
-    // ✅ LOGIN
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody AuthRequest request) {
         User user = authService.login(request.getEmail());
