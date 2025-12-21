@@ -20,19 +20,14 @@ public class AssessmentController {
         this.assessmentService = assessmentService;
     }
 
-    // 1️⃣ POST /api/assessments → Record result
     @PostMapping
     public AssessmentResult recordAssessment(@RequestBody AssessmentResult result) {
         return assessmentService.recordAssessment(result);
     }
-
-    // 2️⃣ GET /api/assessments/student/{studentId} → Get results
     @GetMapping("/student/{studentId}")
     public List<AssessmentResult> getResultsByStudent(@PathVariable Long studentId) {
         return assessmentService.getResultsByStudent(studentId);
     }
-
-    // 3️⃣ GET /api/assessments/student/{studentId}/skill/{skillId}
     @GetMapping("/student/{studentId}/skill/{skillId}")
     public List<AssessmentResult> getResultsByStudentAndSkill(
             @PathVariable Long studentId,
