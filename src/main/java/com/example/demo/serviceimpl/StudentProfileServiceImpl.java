@@ -13,16 +13,21 @@ import com.example.demo.service.StudentProfileService;
 @Service
 public class StudentProfileServiceImpl implements StudentProfileService {
 
-    private final StudentProfileRepository studentProfileRepository;
+    private StudentProfileRepository studentProfileRepository;
     private UserRepository userRepository;
 
-    // REQUIRED BY TESTS
+    // ✅ REQUIRED FOR spring-boot:run
+    public StudentProfileServiceImpl() {
+        // default constructor for Spring runtime
+    }
+
+    // ✅ REQUIRED BY TEST CASES
     public StudentProfileServiceImpl(
             @Lazy StudentProfileRepository studentProfileRepository) {
         this.studentProfileRepository = studentProfileRepository;
     }
 
-    // keep existing constructor
+    // ✅ EXISTING CONSTRUCTOR (KEEP)
     public StudentProfileServiceImpl(
             @Lazy StudentProfileRepository studentProfileRepository,
             @Lazy UserRepository userRepository) {
