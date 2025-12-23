@@ -18,7 +18,6 @@ public class UserServiceImpl implements AuthService {
         this.userRepository = userRepository;
     }
 
-   
     @Override
     public User register(AuthRequest request) {
 
@@ -26,21 +25,20 @@ public class UserServiceImpl implements AuthService {
             throw new IllegalArgumentException("Email already exists");
         }
 
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword()); 
-        user.setFullName("DEFAULT_USER");
-        user.setRole("STUDENT");
-        user.setCreatedAt(Instant.now());
+        User user = User.builder()
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .fullName("DEFAULT_USER")
+                .role(User.Role.STUDENT)
+                .createdAt(Instant.now())
+                .build();
 
         return userRepository.save(user);
     }
+
     @Override
     public User login(String email) {
-
         return userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Invalid email")
-                );
+                .orElseThrow(() -> new IllegalArgumentException("Invalid email"));
     }
 }

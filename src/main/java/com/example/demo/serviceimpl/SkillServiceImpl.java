@@ -24,10 +24,11 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public Skill updateSkill(Long id, Skill skill) {
-
         Skill existing = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Skill not found"));
-        existing.setSkillName(skill.getSkillName());
+
+        existing.setCode(skill.getCode());
+        existing.setName(skill.getName());
         existing.setCategory(skill.getCategory());
         existing.setDescription(skill.getDescription());
         existing.setMinCompetencyScore(skill.getMinCompetencyScore());
