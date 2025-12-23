@@ -18,7 +18,7 @@ public class UserServiceImpl implements AuthService {
         this.userRepository = userRepository;
     }
 
-    // REGISTER
+   
     @Override
     public User register(AuthRequest request) {
 
