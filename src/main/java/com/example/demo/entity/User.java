@@ -1,11 +1,22 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.Instant;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
+
+    public enum Role {
+        ADMIN, INSTRUCTOR, STUDENT
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,27 +31,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     private Instant createdAt;
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
-
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
-
-    public Instant getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 }
