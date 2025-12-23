@@ -28,9 +28,18 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // 🔥 THIS IS THE MISSING PIECE
+    // ✅ REQUIRED BY UserServiceImpl
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    // ✅ REQUIRED BY UserServiceImpl (NO NEW FILE)
+    @Bean
+    public JwtUtil jwtUtil() {
+        return new JwtUtil(
+                "01234567890123456789012345678901",
+                3600000
+        );
     }
 }

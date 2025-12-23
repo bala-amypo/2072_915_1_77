@@ -1,21 +1,38 @@
 package com.example.demo.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.example.demo.entity.User;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 
-@Configuration
-public class JwtConfig {
+import javax.crypto.SecretKey;
+import java.util.Date;
 
-    /**
-     * JwtUtil bean for Spring runtime
-     * Matches TestNG usage exactly:
-     *   new JwtUtil("01234567890123456789012345678901", 3600000)
-     */
-    @Bean
-    public JwtUtil jwtUtil() {
-        return new JwtUtil(
-                "01234567890123456789012345678901", // 32+ characters
-                3600000 // 1 hour validity
-        );
+public class JwtUtil {
+
+    private final SecretKey key;
+    private final long validityMs;
+
+    public JwtUtil(String secret, long validityMs) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        this.validityMs = validityMs;
+    }
+
+    public String generateToken(User user) {
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .claim("userId", user.getId())
+                .claim("email", user.getEmail())
+                .claim("role", user.getRole().name())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + validityMs))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public Jws<Claims> validateAndParse(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
     }
 }
