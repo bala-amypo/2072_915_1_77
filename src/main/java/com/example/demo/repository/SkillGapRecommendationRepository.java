@@ -8,10 +8,6 @@ import java.util.List;
 public interface SkillGapRecommendationRepository
         extends JpaRepository<SkillGapRecommendation, Long> {
 
-    List<SkillGapRecommendation> findByStudentProfileIdOrderByGeneratedAtDesc(Long studentProfileId);
-
-    // used in tests
-    
-    List<SkillGapRecommendation> findByStudentIdOrderByCreatedAtDesc(Long studentId);
-
+    // ✅ FIXED METHOD (matches entity relationship)
+    List<SkillGapRecommendation> findByStudentProfileId(Long studentId);
 }
