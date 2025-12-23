@@ -2,6 +2,7 @@ package com.example.demo.serviceimpl;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.*;
@@ -17,11 +18,11 @@ public class SkillGapServiceImpl implements SkillGapService {
     private final StudentProfileRepository studentRepo;
 
     public SkillGapServiceImpl(
-            SkillGapRecordRepository gapRepo,
-            AssessmentResultRepository assessmentRepo,
-            SkillRepository skillRepo,
-            StudentProfileRepository studentRepo) {
-
+            @Lazy SkillGapRecordRepository gapRepo,
+            @Lazy AssessmentResultRepository assessmentRepo,
+            @Lazy SkillRepository skillRepo,
+            @Lazy StudentProfileRepository studentRepo
+    ) {
         this.gapRepo = gapRepo;
         this.assessmentRepo = assessmentRepo;
         this.skillRepo = skillRepo;
@@ -31,21 +32,18 @@ public class SkillGapServiceImpl implements SkillGapService {
     @Override
     public List<SkillGapRecord> computeGaps(Long studentId) {
 
-        StudentProfile student =
-                studentRepo.findById(studentId)
-                        .orElseThrow(() -> new RuntimeException("Student not found"));
+        StudentProfile student = studentRepo.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
 
         List<Skill> skills = skillRepo.findByActiveTrue();
 
         for (Skill skill : skills) {
 
             List<AssessmentResult> results =
-                    assessmentRepo.findByStudentProfileIdAndSkillId(
-                            studentId, skill.getId());
+                    assessmentRepo.findByStudentProfileIdAndSkillId(studentId, skill.getId());
 
-            double currentScore =
-                    results.isEmpty() ? 0 :
-                            results.get(results.size() - 1).getScore();
+            double currentScore = results.isEmpty() ? 0
+                    : results.get(results.size() - 1).getScore();
 
             double targetScore = skill.getMinCompetencyScore();
             double gap = targetScore - currentScore;

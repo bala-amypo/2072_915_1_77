@@ -2,6 +2,7 @@ package com.example.demo.serviceimpl;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Skill;
@@ -13,7 +14,7 @@ public class SkillServiceImpl implements SkillService {
 
     private final SkillRepository repository;
 
-    public SkillServiceImpl(SkillRepository repository) {
+    public SkillServiceImpl(@Lazy SkillRepository repository) {
         this.repository = repository;
     }
 

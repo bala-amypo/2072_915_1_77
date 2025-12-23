@@ -2,6 +2,7 @@ package com.example.demo.serviceimpl;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.StudentProfile;
@@ -15,15 +16,16 @@ public class StudentProfileServiceImpl implements StudentProfileService {
     private final StudentProfileRepository studentProfileRepository;
     private UserRepository userRepository;
 
-    // ✅ REQUIRED BY TESTS
-    public StudentProfileServiceImpl(StudentProfileRepository studentProfileRepository) {
+    // REQUIRED BY TESTS
+    public StudentProfileServiceImpl(
+            @Lazy StudentProfileRepository studentProfileRepository) {
         this.studentProfileRepository = studentProfileRepository;
     }
 
-    // existing constructor (keep)
+    // keep existing constructor
     public StudentProfileServiceImpl(
-            StudentProfileRepository studentProfileRepository,
-            UserRepository userRepository) {
+            @Lazy StudentProfileRepository studentProfileRepository,
+            @Lazy UserRepository userRepository) {
         this.studentProfileRepository = studentProfileRepository;
         this.userRepository = userRepository;
     }
