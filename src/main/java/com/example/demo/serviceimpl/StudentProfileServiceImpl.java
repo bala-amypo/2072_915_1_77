@@ -20,6 +20,11 @@ public class StudentProfileServiceImpl implements StudentProfileService {
     public StudentProfileServiceImpl() {
         // default constructor for Spring runtime
     }
+    public StudentProfile getByUserId(Long userId) {
+    return studentProfileRepository.findByUserId(userId)
+            .orElseThrow(() -> new RuntimeException("Student profile not found"));
+}
+
 
     // ✅ REQUIRED BY TEST CASES
     public StudentProfileServiceImpl(

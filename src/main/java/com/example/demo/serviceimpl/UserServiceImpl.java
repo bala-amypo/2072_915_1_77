@@ -17,6 +17,15 @@ public class UserServiceImpl implements AuthService {
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+    public User getById(Long id) {
+    return userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+}
+
+public List<User> listInstructors() {
+    return userRepository.findByRole(User.Role.INSTRUCTOR);
+}
+
 
     @Override
     public User register(AuthRequest request) {
