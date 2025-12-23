@@ -92,7 +92,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     public List<SkillGapRecommendation> getRecommendationsForStudent(
             Long studentId) {
 
-        // ✅ FIXED METHOD NAME
-        return recommendationRepo.findByStudentProfileId(studentId);
+        // ✅ MUST MATCH TEST
+        return recommendationRepo.findByStudentOrdered(studentId);
     }
 }
