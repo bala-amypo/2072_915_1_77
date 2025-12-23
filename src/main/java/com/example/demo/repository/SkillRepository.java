@@ -9,7 +9,7 @@ import com.example.demo.entity.Skill;
 
 public interface SkillRepository extends JpaRepository<Skill, Long> {
 
-    Optional<Skill> findBySkillName(String skillName);
+    Optional<Skill> findByName(String name);
 
     List<Skill> findByActiveTrue();
 }
