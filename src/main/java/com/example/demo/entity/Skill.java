@@ -6,17 +6,16 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Skill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String code;   // REQUIRED BY TESTS
+    private String code;
 
     private String name;
 
@@ -26,5 +25,5 @@ public class Skill {
 
     private Double minCompetencyScore = 0.0;
 
-    private Boolean active = true;
+    private boolean active = true;
 }

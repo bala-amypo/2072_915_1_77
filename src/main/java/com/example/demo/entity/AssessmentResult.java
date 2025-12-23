@@ -8,35 +8,26 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class AssessmentResult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "student_profile_id")
-    private StudentProfile studentProfile;
-
-    @ManyToOne
-    @JoinColumn(name = "skill_id")
-    private Skill skill;
-
-    @Column(nullable = false)
     private String assessmentId;
 
-    @Column(nullable = false)
     private Double score;
 
     private Double maxScore = 100.0;
 
-    private Instant attemptedAt;
+    private Instant attemptedAt = Instant.now();
 
-    @PrePersist
-    public void onCreate() {
-        this.attemptedAt = Instant.now();
-    }
+    @ManyToOne
+    private StudentProfile studentProfile;
+
+    @ManyToOne
+    private Skill skill;
 }
