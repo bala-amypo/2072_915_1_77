@@ -53,7 +53,8 @@ public class RecommendationServiceImpl implements RecommendationService {
         rec.setSkill(skill);
         rec.setGapScore(gap);
         rec.setPriority(gap > 20 ? "HIGH" : "LOW");
-        rec.setRecommendedAction("Practice more on " + skill.getSkillName());
+       rec.setRecommendedAction("Practice more on " + skill.getName());
+
 
         // ❌ DO NOT SET generatedAt (handled by @PrePersist)
 
