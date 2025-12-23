@@ -1,3 +1,5 @@
+package com.example.demo.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,15 +17,18 @@ public class User {
 
     private String fullName;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     public enum Role {
-        ADMIN, INSTRUCTOR, STUDENT
+        ADMIN,
+        INSTRUCTOR,
+        STUDENT
     }
 }

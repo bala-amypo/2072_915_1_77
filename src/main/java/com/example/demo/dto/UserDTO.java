@@ -1,12 +1,13 @@
 package com.example.demo.dto;
 
 import com.example.demo.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.Instant;
 
 @Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
 

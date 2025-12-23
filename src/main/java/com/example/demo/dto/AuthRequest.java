@@ -1,16 +1,16 @@
 package com.example.demo.dto;
 
 import com.example.demo.entity.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthRequest {
 
-    // Used for BOTH register & login
-    private String fullName;   // used only for register
+    private String fullName;
     private String email;
     private String password;
-    private User.Role role;    // optional (defaults to STUDENT)
+    private User.Role role;
 }

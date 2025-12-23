@@ -2,6 +2,11 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 
 @Entity
 public class SkillGapResult {
