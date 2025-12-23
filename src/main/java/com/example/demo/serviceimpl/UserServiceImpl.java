@@ -1,46 +1,134 @@
 package com.example.demo.serviceimpl;
 
 import com.example.demo.config.JwtUtil;
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.entity.User;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AuthService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Override
-public User register(AuthRequest request) {
+@Service
+public class UserServiceImpl implements AuthService {
 
-    if (userRepository.existsByEmail(request.getEmail())) {
-        throw new IllegalArgumentException("Email already exists");
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+
+    /**
+     * 🔹 Constructor used by TestNG / Mockito
+     * (tests manually create JwtUtil, so jwtUtil is not needed here)
+     */
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
+        this.jwtUtil = null;
     }
 
-    User user = User.builder()
-            .fullName(request.getFullName())
-            .email(request.getEmail())
-            .password(passwordEncoder.encode(request.getPassword()))
-            .role(request.getRole() != null ? request.getRole() : User.Role.STUDENT)
-            .build();
-
-    return userRepository.save(user);
-}
-
-@Override
-public AuthResponse login(AuthRequest request) {
-
-    User user = userRepository.findByEmail(request.getEmail())
-            .orElseThrow(() ->
-                    new ResourceNotFoundException("User not found"));
-
-    if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-        throw new IllegalArgumentException("Invalid credentials");
+    /**
+     * 🔹 Constructor used by Spring Boot at runtime
+     * IMPORTANT: @Autowired tells Spring which constructor to use
+     */
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder,
+                           JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
-    return new AuthResponse(jwtUtil.generateToken(user));
+    // --------------------------------------------------
+    // REGISTER (AuthService)
+    // --------------------------------------------------
+    @Override
+    public User register(AuthRequest request) {
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+
+        User user = User.builder()
+                .fullName(request.getFullName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(request.getRole() != null
+                        ? request.getRole()
+                        : User.Role.STUDENT)
+                .build();
+
+        return userRepository.save(user);
+    }
+
+    // --------------------------------------------------
+    // LOGIN (AuthService)
+    // --------------------------------------------------
+    @Override
+    public AuthResponse login(AuthRequest request) {
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Invalid credentials");
+        }
+
+        String token = jwtUtil.generateToken(user);
+        return new AuthResponse(token);
+    }
+
+    // --------------------------------------------------
+    // METHODS USED DIRECTLY IN TESTS
+    // --------------------------------------------------
+
+    /**
+     * Used in TestNG tests for registration
+     */
+    public User register(User user) {
+
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        if (user.getRole() == null) {
+            user.setRole(User.Role.STUDENT);
+        }
+
+        return userRepository.save(user);
+    }
+
+    /**
+     * Used in tests: get user by ID
+     */
+    public User getById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
+    }
+
+    /**
+     * Used in tests: find user by email
+     */
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
+    }
+
+    /**
+     * Used in tests: list instructors
+     */
+    public List<User> listInstructors() {
+        return userRepository.findByRole(User.Role.INSTRUCTOR);
+    }
 }
