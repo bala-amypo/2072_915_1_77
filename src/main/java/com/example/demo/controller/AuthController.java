@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.entity.User;
 import com.example.demo.service.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,12 +20,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterRequest req) {
+    public ResponseEntity<User> register(@RequestBody AuthRequest req) {
         return ResponseEntity.ok(authService.register(req));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest req) {
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest req) {
         return ResponseEntity.ok(authService.login(req));
     }
 }
