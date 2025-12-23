@@ -1,38 +1,30 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.*;
-
 import com.example.demo.entity.AssessmentResult;
 import com.example.demo.service.AssessmentService;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Assessments")
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/assessments")
+@Tag(name = "Assessments")
 public class AssessmentController {
 
-    private final AssessmentService assessmentService;
+    private final AssessmentService service;
 
-    public AssessmentController(AssessmentService assessmentService) {
-        this.assessmentService = assessmentService;
+    public AssessmentController(AssessmentService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public AssessmentResult recordAssessment(@RequestBody AssessmentResult result) {
-        return assessmentService.recordAssessment(result);
+    public AssessmentResult record(@RequestBody AssessmentResult r) {
+        return service.recordAssessment(r);
     }
-    @GetMapping("/student/{studentId}")
-    public List<AssessmentResult> getResultsByStudent(@PathVariable Long studentId) {
-        return assessmentService.getResultsByStudent(studentId);
-    }
-    @GetMapping("/student/{studentId}/skill/{skillId}")
-    public List<AssessmentResult> getResultsByStudentAndSkill(
-            @PathVariable Long studentId,
-            @PathVariable Long skillId) {
 
-        return assessmentService.getResultsByStudentAndSkill(studentId, skillId);
+    @GetMapping("/student/{studentId}")
+    public List<AssessmentResult> getByStudent(@PathVariable Long studentId) {
+        return service.getResultsByStudent(studentId);
     }
 }
