@@ -11,5 +11,7 @@ public interface SkillGapRecommendationRepository
     List<SkillGapRecommendation> findByStudentProfileIdOrderByGeneratedAtDesc(Long studentProfileId);
 
     // used in tests
-    List<SkillGapRecommendation> findByStudentOrdered(Long studentId);
+    
+    List<SkillGapRecommendation> findByStudentIdOrderByCreatedAtDesc(Long studentId);
+
 }

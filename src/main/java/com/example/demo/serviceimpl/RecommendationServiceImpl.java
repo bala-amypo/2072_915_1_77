@@ -30,7 +30,8 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-    public SkillGapRecommendation computeRecommendationForStudentSkill(Long studentId, Long skillId) {
+    public SkillGapRecommendation computeRecommendationForStudentSkill(
+            Long studentId, Long skillId) {
 
         StudentProfile profile = profileRepo.findById(studentId)
                 .orElseThrow(() ->
@@ -43,7 +44,10 @@ public class RecommendationServiceImpl implements RecommendationService {
         List<AssessmentResult> results =
                 assessmentRepo.findByStudentProfileIdAndSkillId(studentId, skillId);
 
-        double currentScore = results.isEmpty() ? 0 : results.get(0).getScore();
+        double currentScore = results.isEmpty()
+                ? 0
+                : results.get(0).getScore();
+
         double targetScore = skill.getMinCompetencyScore();
         double gapScore = targetScore - currentScore;
 
@@ -51,37 +55,44 @@ public class RecommendationServiceImpl implements RecommendationService {
                 gapScore >= 20 ? "HIGH" :
                 gapScore >= 10 ? "MEDIUM" : "LOW";
 
-        SkillGapRecommendation rec = SkillGapRecommendation.builder()
-                .studentProfile(profile)
-                .skill(skill)
-                .gapScore(gapScore)
-                .priority(priority)
-                .recommendedAction("Revise " + skill.getName() + " fundamentals")
-                .generatedBy("SYSTEM")
-                .build();
+        SkillGapRecommendation recommendation =
+                SkillGapRecommendation.builder()
+                        .studentProfile(profile)
+                        .skill(skill)
+                        .gapScore(gapScore)
+                        .priority(priority)
+                        .recommendedAction(
+                                "Revise " + skill.getName() + " fundamentals")
+                        .generatedBy("SYSTEM")
+                        .build();
 
-        return recommendationRepo.save(rec);
+        return recommendationRepo.save(recommendation);
     }
 
     @Override
-    public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
+    public List<SkillGapRecommendation> computeRecommendationsForStudent(
+            Long studentId) {
 
         StudentProfile profile = profileRepo.findById(studentId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Profile not found"));
 
-        List<SkillGapRecommendation> list = new ArrayList<>();
+        List<SkillGapRecommendation> recommendations = new ArrayList<>();
 
         for (Skill skill : skillRepo.findByActiveTrue()) {
-            list.add(computeRecommendationForStudentSkill(
-                    profile.getId(), skill.getId()));
+            recommendations.add(
+                    computeRecommendationForStudentSkill(
+                            profile.getId(), skill.getId()));
         }
 
-        return list;
+        return recommendations;
     }
 
     @Override
-    public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
-        return recommendationRepo.findByStudentOrdered(studentId);
+    public List<SkillGapRecommendation> getRecommendationsForStudent(
+            Long studentId) {
+
+        // ✅ FIXED METHOD NAME
+        return recommendationRepo.findByStudentProfileId(studentId);
     }
 }
