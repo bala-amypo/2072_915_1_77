@@ -37,4 +37,9 @@ public class SkillController {
     public List<Skill> getAll() {
         return service.getAllSkills();
     }
+    @PutMapping("/{id}/deactivate")
+public Skill deactivate(@PathVariable Long id) {
+    return service.deactivateSkill(id);
+}
+
 }
