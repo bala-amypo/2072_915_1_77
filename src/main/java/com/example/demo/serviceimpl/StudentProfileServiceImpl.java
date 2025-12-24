@@ -53,4 +53,10 @@ public class StudentProfileServiceImpl implements StudentProfileService {
     public List<StudentProfile> getAllProfiles() {
         return repository.findAll();
     }
+    @Override
+public StudentProfile getByEnrollmentId(String enrollmentId) {
+    return repository.findByEnrollmentId(enrollmentId)
+            .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
+}
+
 }

@@ -12,4 +12,7 @@ public interface StudentProfileRepository extends JpaRepository<StudentProfile, 
     Optional<StudentProfile> findByUserId(Long userId);
 
     boolean existsByEnrollmentId(String enrollmentId);
+
+    Optional<StudentProfile> findByEnrollmentId(String enrollmentId);
+
 }
