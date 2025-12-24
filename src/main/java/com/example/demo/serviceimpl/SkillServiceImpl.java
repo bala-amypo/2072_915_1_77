@@ -5,7 +5,6 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -24,8 +23,7 @@ public class SkillServiceImpl implements SkillService {
             throw new IllegalArgumentException("Skill code must be unique");
         }
 
-        if (skill.getMinCompetencyScore() < 0 ||
-            skill.getMinCompetencyScore() > 100) {
+        if (skill.getMinCompetencyScore() < 0 || skill.getMinCompetencyScore() > 100) {
             throw new IllegalArgumentException("Invalid competency score");
         }
 
@@ -35,8 +33,7 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public Skill updateSkill(Long id, Skill skill) {
         Skill existing = repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Skill not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
 
         existing.setName(skill.getName());
         existing.setCategory(skill.getCategory());
@@ -49,8 +46,7 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public Skill getById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Skill not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
     }
 
     @Override
@@ -64,18 +60,9 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public void deactivateSkill(Long id) {
+    public Skill deactivateSkill(Long id) {
         Skill skill = getById(id);
         skill.setActive(false);
-        repository.save(skill);
+        return repository.save(skill);
     }
-    @Override
-public Skill deactivateSkill(Long id) {
-    Skill skill = repository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
-
-    skill.setActive(false);
-    return repository.save(skill);
-}
-
 }

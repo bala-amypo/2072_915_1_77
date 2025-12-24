@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Skill;
-
 import java.util.List;
 
 public interface SkillService {
@@ -16,8 +15,5 @@ public interface SkillService {
 
     List<Skill> getActiveSkills();
 
-    void deactivateSkill(Long id);
-    
-    Skill deactivateSkill(Long id);
-
+    Skill deactivateSkill(Long id);   // only ONE
 }
