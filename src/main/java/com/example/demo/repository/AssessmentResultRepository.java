@@ -25,6 +25,5 @@ public interface AssessmentResultRepository extends JpaRepository<AssessmentResu
            "where a.studentProfile.id = :studentId and a.attemptedAt between :from and :to")
     List<AssessmentResult> findResultsForStudentBetween(
             Long studentId, Instant from, Instant to);
-    List<AssessmentResult> findByStudentProfileIdAndSkillId(Long studentId, Long skillId);
-
+    
 }
