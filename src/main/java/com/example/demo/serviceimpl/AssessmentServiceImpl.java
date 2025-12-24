@@ -22,7 +22,7 @@ public class AssessmentServiceImpl implements AssessmentService {
         if (result.getScore() == null ||
             result.getScore() < 0 ||
             result.getScore() > result.getMaxScore()) {
-            throw new IllegalArgumentException("Score must be between 0 and 100");
+            throw new IllegalArgumentException("Score must be between 0 and max score");
         }
 
         return repository.save(result);

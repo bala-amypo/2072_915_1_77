@@ -30,7 +30,8 @@ public class AssessmentController {
     @GetMapping("/student/{studentId}/skill/{skillId}")
 public List<AssessmentResult> getByStudentAndSkill(@PathVariable Long studentId,
                                                     @PathVariable Long skillId) {
-    return service.getAssessmentsByStudentAndSkill(studentId, skillId);
+    return service.getResultsByStudentAndSkill(studentId, skillId);
+
 }
 
 }
