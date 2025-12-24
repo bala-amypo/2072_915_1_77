@@ -69,4 +69,13 @@ public class SkillServiceImpl implements SkillService {
         skill.setActive(false);
         repository.save(skill);
     }
+    @Override
+public Skill deactivateSkill(Long id) {
+    Skill skill = repository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
+
+    skill.setActive(false);
+    return repository.save(skill);
+}
+
 }

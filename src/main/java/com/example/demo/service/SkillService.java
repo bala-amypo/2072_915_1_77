@@ -17,4 +17,7 @@ public interface SkillService {
     List<Skill> getActiveSkills();
 
     void deactivateSkill(Long id);
+    
+    Skill deactivateSkill(Long id);
+
 }
