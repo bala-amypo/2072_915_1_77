@@ -13,6 +13,6 @@ public interface StudentProfileRepository extends JpaRepository<StudentProfile, 
 
     boolean existsByEnrollmentId(String enrollmentId);
 
-    Optional<StudentProfile> findByEnrollmentId(String enrollmentId);
+   
 
 }
