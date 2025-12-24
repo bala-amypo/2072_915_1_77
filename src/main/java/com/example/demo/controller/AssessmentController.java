@@ -27,4 +27,10 @@ public class AssessmentController {
     public List<AssessmentResult> getByStudent(@PathVariable Long studentId) {
         return service.getResultsByStudent(studentId);
     }
+    @GetMapping("/student/{studentId}/skill/{skillId}")
+public List<AssessmentResult> getByStudentAndSkill(@PathVariable Long studentId,
+                                                    @PathVariable Long skillId) {
+    return service.getAssessmentsByStudentAndSkill(studentId, skillId);
+}
+
 }

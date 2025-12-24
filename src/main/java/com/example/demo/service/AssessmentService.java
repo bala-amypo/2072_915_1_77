@@ -11,4 +11,6 @@ public interface AssessmentService {
     List<AssessmentResult> getResultsByStudent(Long studentId);
 
     List<AssessmentResult> getResultsByStudentAndSkill(Long studentId, Long skillId);
+
+    
 }
