@@ -13,6 +13,9 @@ public interface StudentProfileService {
     StudentProfile getByUserId(Long userId);
 
     StudentProfile getProfileByEnrollmentId(String enrollmentId);
+    StudentProfile getByEnrollmentId(String enrollmentId);
+
 
     List<StudentProfile> getAllProfiles();
+   
 }

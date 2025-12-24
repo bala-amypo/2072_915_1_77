@@ -32,4 +32,9 @@ public class StudentProfileController {
     public List<StudentProfile> getAll() {
         return service.getAllProfiles();
     }
+    @GetMapping("/enrollment/{enrollmentId}")
+public StudentProfile getByEnrollment(@PathVariable String enrollmentId) {
+    return service.getByEnrollmentId(enrollmentId);
+}
+
 }
