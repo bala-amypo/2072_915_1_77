@@ -22,10 +22,6 @@ public class UserServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    /**
-     * 🔹 Constructor used by TestNG / Mockito
-     * (tests manually create JwtUtil, so jwtUtil is not needed here)
-     */
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();

@@ -28,7 +28,6 @@ public class StudentProfile {
 
     private Integer yearLevel;
 
-    // ✅ REQUIRED BY TEST
     private String grade;
 
     @Builder.Default

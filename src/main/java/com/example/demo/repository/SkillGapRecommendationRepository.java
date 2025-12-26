@@ -10,7 +10,7 @@ import java.util.List;
 public interface SkillGapRecommendationRepository
         extends JpaRepository<SkillGapRecommendation, Long> {
 
-    // ✅ TEST-EXPECTED METHOD
+    
     @Query("""
         SELECT r FROM SkillGapRecommendation r
         WHERE r.studentProfile.id = :studentId
@@ -20,6 +20,5 @@ public interface SkillGapRecommendationRepository
             @Param("studentId") Long studentId
     );
 
-    // (Optional – used internally if needed)
     List<SkillGapRecommendation> findByStudentProfileId(Long studentId);
 }

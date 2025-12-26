@@ -15,5 +15,5 @@ public interface SkillService {
 
     List<Skill> getActiveSkills();
 
-    Skill deactivateSkill(Long id);   // only ONE
+    Skill deactivateSkill(Long id);   
 }
