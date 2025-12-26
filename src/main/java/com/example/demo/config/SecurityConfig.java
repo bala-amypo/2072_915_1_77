@@ -10,23 +10,35 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/auth/**",
-                        "/health",
-                        "/swagger-ui/**",                        
-                        "/v3/api-docs/**"
-                ).permitAll()
-                .anyRequest().authenticated()
-            );
+    http
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
 
-        return http.build();
-    }
+            // Public
+            .requestMatchers(
+                    "/auth/**",
+                    "/health",
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**"
+            ).permitAll()
+
+            // ADMIN routes
+            .requestMatchers("/api/students/**").hasRole("ADMIN")
+            .requestMatchers("/api/skills/**").hasRole("ADMIN")
+            .requestMatchers("/api/assessments/**").hasRole("ADMIN")
+            .requestMatchers("/api/gaps/**").hasRole("ADMIN")
+            .requestMatchers("/api/recommendations/**").hasRole("ADMIN")
+
+            // Everything else
+            .anyRequest().authenticated()
+        );
+
+    return http.build();
+}
+
 
     // ✅ REQUIRED BY UserServiceImpl
     @Bean
