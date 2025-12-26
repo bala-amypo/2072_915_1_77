@@ -18,13 +18,12 @@ public class SkillGapController {
         this.service = service;
     }
 
-    // POST /api/gaps/compute/{studentId}
+   
     @PostMapping("/compute/{studentId}")
     public List<SkillGapRecord> compute(@PathVariable Long studentId) {
         return service.computeGaps(studentId);
     }
 
-    // GET /api/gaps/student/{studentId}
     @GetMapping("/student/{studentId}")
     public List<SkillGapRecord> getByStudent(@PathVariable Long studentId) {
         return service.getGapsByStudent(studentId);

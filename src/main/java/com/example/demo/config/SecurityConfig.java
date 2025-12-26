@@ -16,7 +16,7 @@ public SecurityFilterChain filterChain(HttpSecurity http, JwtUtil jwtUtil) throw
 
     http
         .csrf(csrf -> csrf.disable())
-        .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)   // 🔥 THIS LINE
+        .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)   
         .authorizeHttpRequests(auth -> auth
 
             .requestMatchers("/auth/**", "/health", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
