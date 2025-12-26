@@ -28,10 +28,7 @@ public class UserServiceImpl implements AuthService {
         this.jwtUtil = null;
     }
 
-    /**
-     * 🔹 Constructor used by Spring Boot at runtime
-     * IMPORTANT: @Autowired tells Spring which constructor to use
-     */
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
@@ -41,9 +38,7 @@ public class UserServiceImpl implements AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    // --------------------------------------------------
-    // REGISTER (AuthService)
-    // --------------------------------------------------
+    
     @Override
     public User register(AuthRequest request) {
 
@@ -63,9 +58,7 @@ public class UserServiceImpl implements AuthService {
         return userRepository.save(user);
     }
 
-    // --------------------------------------------------
-    // LOGIN (AuthService)
-    // --------------------------------------------------
+    
     @Override
     public AuthResponse login(AuthRequest request) {
 
@@ -81,13 +74,7 @@ public class UserServiceImpl implements AuthService {
         return new AuthResponse(token);
     }
 
-    // --------------------------------------------------
-    // METHODS USED DIRECTLY IN TESTS
-    // --------------------------------------------------
-
-    /**
-     * Used in TestNG tests for registration
-     */
+   
     public User register(User user) {
 
         if (userRepository.existsByEmail(user.getEmail())) {
@@ -103,27 +90,21 @@ public class UserServiceImpl implements AuthService {
         return userRepository.save(user);
     }
 
-    /**
-     * Used in tests: get user by ID
-     */
+  
     public User getById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found"));
     }
 
-    /**
-     * Used in tests: find user by email
-     */
+    
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found"));
     }
 
-    /**
-     * Used in tests: list instructors
-     */
+   
     public List<User> listInstructors() {
         return userRepository.findByRole(User.Role.INSTRUCTOR);
     }
