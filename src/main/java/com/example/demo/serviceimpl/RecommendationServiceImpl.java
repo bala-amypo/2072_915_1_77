@@ -44,9 +44,12 @@ public class RecommendationServiceImpl implements RecommendationService {
         List<AssessmentResult> results =
                 assessmentRepo.findByStudentProfileIdAndSkillId(studentId, skillId);
 
-        double currentScore = results.isEmpty()
-                ? 0
-                : results.get(0).getScore();
+       double currentScore = results.isEmpty()
+        ? 0
+        : results.stream()
+                .mapToDouble(AssessmentResult::getScore)
+                .max()
+                .orElse(0);
 
         double targetScore = skill.getMinCompetencyScore();
         double gapScore = targetScore - currentScore;
