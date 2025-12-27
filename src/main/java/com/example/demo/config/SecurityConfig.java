@@ -57,8 +57,13 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/assessments/**").authenticated()
 
                 // SKILL GAP & RECOMMENDATIONS
+                // SKILL GAP & RECOMMENDATIONS
+                .requestMatchers(HttpMethod.POST, "/api/gaps/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/gaps/**").authenticated()
+
+                .requestMatchers(HttpMethod.POST, "/api/recommendations/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/recommendations/**").authenticated()
+
 
                 .anyRequest().authenticated()
             );
