@@ -2,7 +2,9 @@ package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -16,16 +18,32 @@ public SecurityFilterChain filterChain(HttpSecurity http, JwtUtil jwtUtil) throw
 
     http
         .csrf(csrf -> csrf.disable())
-        .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)   
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+
         .authorizeHttpRequests(auth -> auth
 
             .requestMatchers("/auth/**", "/health", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
-            .requestMatchers("/api/students/**").hasRole("ADMIN")
-            .requestMatchers("/api/skills/**").hasRole("ADMIN")
-            .requestMatchers("/api/assessments/**").hasRole("ADMIN")
-            .requestMatchers("/api/gaps/**").hasRole("ADMIN")
-            .requestMatchers("/api/recommendations/**").hasRole("ADMIN")
+            // STUDENT PROFILE
+            .requestMatchers(HttpMethod.POST, "/api/students/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PUT, "/api/students/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/api/students/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, "/api/students/**").authenticated()
+
+            // SKILLS
+            .requestMatchers(HttpMethod.POST, "/api/skills/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PUT, "/api/skills/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/api/skills/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, "/api/skills/**").authenticated()
+
+            // ASSESSMENTS
+            .requestMatchers(HttpMethod.POST, "/api/assessments/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, "/api/assessments/**").authenticated()
+
+            // SKILL GAP & RECOMMENDATIONS
+            .requestMatchers(HttpMethod.GET, "/api/gaps/**").authenticated()
+            .requestMatchers(HttpMethod.GET, "/api/recommendations/**").authenticated()
 
             .anyRequest().authenticated()
         );
