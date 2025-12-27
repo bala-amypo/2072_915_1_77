@@ -55,7 +55,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/assessments/**").authenticated()
 
                 // SKILL GAP & RECOMMENDATIONS
-                .requestMatchers(HttpMethod.GET, "/api/gaps/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/gaps/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/recommendations/**").authenticated()
 
                 .anyRequest().authenticated()
