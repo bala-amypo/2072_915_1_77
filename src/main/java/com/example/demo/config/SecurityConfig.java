@@ -30,7 +30,7 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
 
-                // PUBLIC ENDPOINTS
+                // 1st public aceess
                 .requestMatchers(
                         "/auth/**",
                         "/health",
@@ -38,7 +38,7 @@ public class SecurityConfig {
                         "/v3/api-docs/**"
                 ).permitAll()
 
-                // STUDENT PROFILE
+                // for atdeunt profile
                 .requestMatchers(HttpMethod.POST, "/api/students/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/students/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/students/**").hasRole("ADMIN")
