@@ -30,7 +30,7 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
 
-                // 1st public aceess
+            //access
                 .requestMatchers(
                         "/auth/**",
                         "/health",
@@ -44,17 +44,17 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/students/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/students/**").authenticated()
 
-                // SKILLS
+                // Skill 
                 .requestMatchers(HttpMethod.POST, "/api/skills/**").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/skills/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/skills/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/skills/**").authenticated()
 
-                // ASSESSMENTS
+                // Assessments
                 .requestMatchers(HttpMethod.POST, "/api/assessments/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/assessments/**").authenticated()
 
-                // SKILL GAP & RECOMMENDATIONS
+                // SKILL GAP , RECOMMENDATIONS
                 .requestMatchers(HttpMethod.GET, "/api/gaps/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/recommendations/**").authenticated()
 
